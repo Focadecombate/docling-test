@@ -35,7 +35,6 @@ galileo_callback = GalileoCallback()
 def convert_markdown_to_json_langchain_streaming(markdown_content: str) -> Fatura:
     """LangChain integration with streaming and callback handling"""
     logger.info(f"file size: {len(markdown_content)}")
-    logger.info(f"Marking markdown content for processing {markdown_content}")
 
     # Initialize callback handler
     callback_handler = StreamingCallbackHandler()
@@ -43,8 +42,8 @@ def convert_markdown_to_json_langchain_streaming(markdown_content: str) -> Fatur
     # Initialize LangChain Ollama LLM with streaming
     llm = OllamaLLM(
         model=settings.MODEL,
-        temperature=0.1,
-        num_ctx=5000,
+        temperature=0.0,
+        num_ctx=7000,
         callbacks=[callback_handler, galileo_callback],
     )
 
@@ -57,9 +56,7 @@ def convert_markdown_to_json_langchain_streaming(markdown_content: str) -> Fatur
 
     prompt = prompt.partial(format_instructions=parser.get_format_instructions())
 
-    logger.info(
-        f"Using model: {settings.MODEL} with context size: {llm.num_ctx}, prompt: {prompt}"
-    )
+    logger.info(f"Using model: {settings.MODEL} with context size: {llm.num_ctx}")
 
     # Create chain
     chain = prompt | llm | parser

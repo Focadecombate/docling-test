@@ -3,7 +3,7 @@ from io import BytesIO
 from uuid import uuid4
 
 from docling_core.types.io import DocumentStream
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, HTTPException, UploadFile
 from pydantic import BaseModel
 
 from .ai_parsing.lang import convert_markdown_to_json_langchain_streaming
@@ -32,6 +32,10 @@ async def parse_document(file: UploadFile):
         )
     )
 
-    result = convert_markdown_to_json_langchain_streaming(markdown_content)
+    try:
+        result = convert_markdown_to_json_langchain_streaming(markdown_content)
+    except Exception as e:
+        logging.error(f"Error during parsing: {e}")
+        raise HTTPException(status_code=500, detail="Error during parsing")
 
     return Response(result=result)

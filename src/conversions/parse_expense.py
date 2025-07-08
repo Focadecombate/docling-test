@@ -18,7 +18,7 @@ def pdf_to_markdown(source: DocumentStream):
         table_structure_options=TableStructureOptions(
             do_cell_matching=True, mode=TableFormerMode.ACCURATE
         ),
-        accelerator_options=AcceleratorOptions(device=AcceleratorDevice.CUDA),
+        accelerator_options=AcceleratorOptions(device=AcceleratorDevice.AUTO),
         ocr_options=EasyOcrOptions(
             lang=["pt"],
         ),
@@ -30,4 +30,4 @@ def pdf_to_markdown(source: DocumentStream):
         }
     )
     result = converter.convert(source)
-    return mdformat.text(result.document.export_to_html())
+    return mdformat.text(result.document.export_to_markdown())
