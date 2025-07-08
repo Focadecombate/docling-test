@@ -4,29 +4,32 @@ from pydantic import BaseModel
 
 
 class Records(BaseModel):
-    data: str
-    establishment: str
+    date: str
+    raw: str
+    establishment: str | None = None
+    description: str | None = None
+    category: str | None = None
     amount: float
 
 
 class InternationalTransactions(BaseModel):
     transactions: list[Records]
-    conversion_rate: float
-    iof: float
+    conversion_rate: float | None = None
+    iof: float | None = None
 
 
 class FuturePayments(BaseModel):
     entries: list[Records]
-    next_bill_total: float
-    other_bills_total: float
-    total_future_payments: float
+    next_bill_total: float | None = None
+    other_bills_total: float | None = None
+    total_future_payments: float | None = None
 
 
 class Expenses(BaseModel):
     current_expenses: list[Records]
     installments: list[Records]
-    international_transactions: InternationalTransactions
-    future_payments: FuturePayments
+    international_transactions: InternationalTransactions | None = None
+    future_payments: FuturePayments | None = None
 
 
 class Metadata(BaseModel):
@@ -40,4 +43,4 @@ class Fatura(BaseModel):
 
 
 class Result(BaseModel):
-    fatura: dict
+    fatura: Fatura
