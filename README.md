@@ -1,3 +1,3 @@
-# docling-test
+# Docling-Poc
 
-Describe your project here.
+A poc using Docling to parse documents using OCR and Ollama with LangChain for using AI models.
